@@ -1,0 +1,14 @@
+{
+  "name": "autolog",
+  "version": "1.0.0",
+  "description": "onlinesjtu auto log",
+  "main": "autolog.js",
+  "scripts": {
+    "start": "node autolog"
+  },
+  "author": "Halley Yan",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "superagent": "^3.5.2"
+  }
+}
