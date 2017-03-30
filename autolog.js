@@ -1,36 +1,38 @@
 let request = require("superagent"),
     cheerio = require('cheerio'),
     studentId = 716901010033,
-    autoCourseid = 2704; 
-    //2704 大学英语（二）
-    //856  离散数学 
-    //958  英语听力 
-    //1172 操作系统 
-    //2457 计算机组成与系统结构 
-    //2466 马克思主义基本原理 
-request
-  .get('http://www.onlinesjtu.com/SCEPlayer/Default.aspx')
-  .query({ 
-      studentid: studentId, 
-      courseid: autoCourseid,
-      termidentify: "2017_1"
-    })
-   .end(function(err, res){
-        let html = res.res.text;
-        let $ = cheerio.load(html);
-        let lessons = $('.section-list ul li>a');
-        lessons.each(function(index, item){
-            let lession_id = item.attribs["data-id"]
-                request
-                    .post('http://www.onlinesjtu.com/SCEPlayer/Default.aspx/AddDacLog')
-                    .set('Content-Type', 'application/json')
-                    .send({ resourceId: lession_id, studentId })
-                    .end(function(err, res){
-                        console.log("考勤成功：" + res.res.text);
-                    });            
-        });
-  });
-
+    autoCourseids = [2704, 856, 958, 1172, 2457, 2466]; 
+    //2704 大学英语 856  离散数学 958  英语听力 1172 操作系统 2457 计算机组成与系统结构 2466 马克思主义基本原理 
+if (process.env.NODE_ENV === 'log') {
+    autoCourseids.forEach((courseid)=> {
+        request
+            .get('http://www.onlinesjtu.com/SCEPlayer/Default.aspx')
+            .query({ 
+                studentid: studentId, 
+                courseid: courseid,
+                termidentify: "2017_1"
+                })
+            .end(function(err, res){
+                    let html = res.res.text;
+                    let $ = cheerio.load(html);
+                    let lessons = $('.section-list ul li>a');
+                    lessons.each(function(index, item){
+                        let lession_id = item.attribs["data-id"]
+                            request
+                                .post('http://www.onlinesjtu.com/SCEPlayer/Default.aspx/AddDacLog')
+                                .set('Content-Type', 'application/json')
+                                .send({ resourceId: lession_id, studentId })
+                                .end(function(err, res){
+                                    console.log("考勤成功：" + res.res.text);
+                                });            
+                    });
+            });
+    });
+} else if (process.env.NODE_ENV === 'evaluate') {
+    console.log("TODO");
+} else {
+    console.log("请运行npm run log 或 evaluate");
+}
 //http://www.onlinesjtu.com/learningspace/learning/student/kaoqinquery/kaoqin_list.asp?courseid=856&term_identify=2017_1
 //http://218.1.73.12/PingJia/Default.aspx?sid=716901010033&cid=2704&ct=2017-3-26&term=2017_1
 // btsubmit:提交评价

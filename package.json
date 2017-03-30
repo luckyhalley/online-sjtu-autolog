@@ -4,7 +4,8 @@
   "description": "onlinesjtu auto log",
   "main": "autolog.js",
   "scripts": {
-    "start": "node autolog"
+    "log": "NODE_ENV='log' node autolog",
+    "evaluate": "NODE_ENV='evaluate' node autolog"
   },
   "author": "Halley Yan",
   "dependencies": {
