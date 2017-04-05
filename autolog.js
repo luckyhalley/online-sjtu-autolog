@@ -1,6 +1,6 @@
 let request = require("superagent"),
     cheerio = require('cheerio'),
-    studentId = 716901010033,
+    studentId = 716901010000,
     autoCourseids = [2704, 856, 958, 1172, 2457, 2466]; 
     //2704 大学英语 856  离散数学 958  英语听力 1172 操作系统 2457 计算机组成与系统结构 2466 马克思主义基本原理 
 
